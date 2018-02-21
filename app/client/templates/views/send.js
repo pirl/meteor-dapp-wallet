@@ -232,6 +232,8 @@ Template['views_send'].onRendered(function(){
             }, estimationCallback.bind(template));
         }
     });
+
+
 });
 
 

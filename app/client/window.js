@@ -6,7 +6,6 @@ $(window).on('focus', function(e){
     $('body').removeClass('app-blur');
 });
 
-
 // add class to the header when scrolling
 $(window).on('scroll', function() {
     var scrollPosition = $(window).scrollTop();
@@ -22,3 +21,4 @@ $(window).on('scroll', function() {
         $('.dapp-sticky-bar').removeClass('sticky');
     }
 })
+

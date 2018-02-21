@@ -1,9 +1,8 @@
 // libs
-@import '{ethereum:dapp-styles}/dapp-styles.less';
 
+@import 'dapp-styles.less';
+@import 'old.elements.import.less';
 @import 'elements.import.less';
-
-
 
 
 /**********************************/
@@ -13,18 +12,28 @@
 
 // Change Default constants
 
-@colorLink: #02A8F3;
-
+@colorLink: #a3cd39;
 @heightHeader: @gridWidth * 2.5;
+
+
+h1 {
+    color: #222 !important;
+}
+
+h2 {
+    padding: 10px !important;
+    background: #a3cd39 !important;
+
+}
 
 
 // Platform specifics
 // Mac OSX
 @colorOSBackgroundFocus: #d9d0d0;
-@colorOSBackgroundBlur: lighten(@colorOSBackgroundFocus, 10%);
+@colorOSBackgroundBlur: lighten(@colorOSBackgroundFocus, 0%);
 
-@colorWinBackgroundFocus: #F0F0F0;
-@colorWinBackgroundBlur: #F0F0F0;
+@colorWinBackgroundFocus: #171717;
+@colorWinBackgroundBlur: #171717;
 
 @colorLinuxBackgroundFocus: #403F3A;
 @colorLinuxBackgroundBlur: #3C3B36;
@@ -76,8 +85,21 @@ body {
 }
 .app-blur {
     .dapp-header {
-        background: @colorWinBackgroundBlur;
+        background: #252525 !important;
     }
+}
+
+
+.dapp-header .block-info {
+    color: #fff !important;
+}
+
+.dapp-header .wallet-balance h3 {
+    color: #fff !important;
+}
+
+.dapp-header .wallet-balance span.account-balance {
+    color: #fff !important;
 }
 
 // WINDOWS
@@ -155,9 +177,9 @@ body {
 .dapp-header {
     padding-right: @gridWidth * 2.5;
     padding-left: @gridWidth * 2.5;
-    background-color: @colorWinBackgroundFocus;
+    background-color: #252525 !important;
+	
     -webkit-app-region: drag; // necessary to drag the wallet window
-    .background-image(linear-gradient(to bottom,  @colorWinBackgroundFocus 50%, #ddd9d9 90%));
 
     &.dapp-small {
         z-index: 30;
@@ -194,8 +216,13 @@ body {
         padding-left: @gridWidth * 0.5;
     }
 
-    nav ul a.active {
-        color: @colorTextSecondary;
+	nav ul a {
+        color: #a3cd39 !important;
+    }
+	
+	nav ul a.active {
+        color: #fff !important;
+		border-bottom: 5px solid #a3cd39 !important;
     }
 
     .block-info {
@@ -226,6 +253,10 @@ body {
         }
         
     }
+
+	progress {
+		color: #a3cd39 !important;
+	}	
     
     .wallet-balance {
         padding-bottom: @defaultPaddingVertical - 5px;
@@ -490,14 +521,6 @@ body {
 
 .account-send-form {
 
-    p.over-daily {
-        .orange;
-        font-weight: 400;
-    }
-    p.under-daily {
-        .green;
-        font-weight: 400;
-    }
 
     > div {
         margin-bottom: @defaultMargin;

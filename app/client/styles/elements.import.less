@@ -1,604 +1,714 @@
-
-.orange {
-    color: @colorOrange;
+#dapp-form-helper-iframe {
+    display: none;
 }
 
-.green {
+/* PROGRESSBAR */
+progress {
+    -webkit-appearance: none;
+    appearance: none;
+    height: @gridHeight/2;
+    margin: @gridHeight/4;
     color: @colorGreen;
+
+    @shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+    @radius: 2px;
+
+    // bar
+    &::-webkit-progress-bar {
+        background-color: fadeout(@colorGrayLight, 10%);
+        border-radius: @radius;
+        box-shadow: @shadow
+    }
+    &::-moz-progress-bar {
+        background-color: fadeout(@colorGrayLight, 10%);
+        border-radius: @radius;
+        box-shadow: @shadow
+    }
+    &::progress-bar {
+        background-color: fadeout(@colorGrayLight, 10%);
+        border-radius: @radius;
+        box-shadow: @shadow
+    }
+
+    // value
+    &::-webkit-progress-value {
+        background-color: @colorGreen;
+        opacity: 0.8;
+        border-radius: @radius;
+    }
+    &::-moz-progress-value {
+        background-color: @colorGreen;
+        opacity: 0.8;
+        border-radius: @radius;
+    }
+    &::progress-value {
+        background-color: @colorGreen;
+        opacity: 0.8;
+        border-radius: @radius;
+    }
 }
 
-.red {
-    color: @colorError;
-}
-
-.blue {
-    color: @colorBlue;
-}
-
-span.address {
-    display: inline;
+.dapp-progress {
     position: relative;
-    font-size: 0.9em;
-    color: @colorLink;
-
-    &.ens-name {
-        font-weight: 400;
-    }
-    
-    &.not-ens-name {
-        font-style: italic;
-    }
-
-    > .dapp-identicon {
-        position: relative;
-        top: 5px;
-        margin-right: @defaultMargin/3;
-    }
-}
-
-.abi-input-range {
-    overflow: auto;
-    max-height: 120px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-.dapp-actionbar .icon-bitcoin {
-    height: 26px;
-    background-image: url('bitcoin-icon.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.wallet-box-list {
-    display: flex;
-    flex-flow: row wrap;
-}
-
-.wallet-box {
-    position: relative;
-    display: inline-block;
-    width: @gridWidth * 6.5;
-    min-height: @gridHeight*4;
-    padding-left: @gridWidth + @defaultPaddingHorizontal;
-    padding-right: @defaultPaddingHorizontal/2;
-    margin-right: @defaultMargin;
-    margin-bottom: @defaultMargin;
-    .box-sizing(border-box);
-    border: 0;
-
-    // ANIMATION
-    .transition(background-color @animationSpeed*4, opacity @animationSpeed);
-
-    &:active {
-        border: 0;
-    }
-
-    &.new {
-        background-color: fadeout( #ffc107, 20%);
-    }
-
-    &.disabled:not(:hover),
-    &.creating {
-        .opacity(0.4);
-    }
-    &.disabled {
-        .filter(grayscale(100%));
-    }
-    &.create {
-        .display(flex);
-        .align-items(center);
-
-        h3 {
-            margin-top: 0;
-            text-align: left;
-        }
-    }
-
-    &.creating { 
-        pointer-events: none;
-        cursor: default;
-    }
-
-    &:last-child {
-        flex: 1 0 @gridWidth * 6.5;
-        max-width: @gridWidth * 13.5;
-        margin-right: 0;
-    }
-
-    &:hover {
-        background-color: lighten(@colorBackgroundHeader, 12%);
-    }
-
-    &.wallets {
-        .background-image(linear-gradient(to right,  lighten(@colorBackgroundHeader, 12%) 0%, rgba(255,255,255, 0.1) 100%));
-        overflow: hidden;
-    }
-    &.tokens {
-        perspective: 800px;
-        position: relative;
-        background-repeat: repeat-y;
-        background-color: @colorGray;
-        background-size: cover;
-        // background-size: @gridWidth * 3;
-        background-position-x: 4px;
-        background-blend-mode: overlay;
-        overflow: hidden;
-        transform-style: preserve-3d;
-
-        .dapp-identicon {
-            border: @colorWhite solid 2px; 
-            .transition(transform 0.3s);
-            backface-visibility: hidden;       
-        }
-
-        .delete-token {
-            position: absolute;
-            left: 12px;
-            top: 20px;
-            background: @colorWhite;
-            border-radius: 50%;
-            width: @gridWidth;
-            height: @gridWidth;
-            z-index: 50;
-            backface-visibility: hidden;
-            transform: rotateY(180deg);
-            box-shadow: @colorGray 0 1px 2px;
-            .transition(transform 0.3s);
-            text-align: center;
-
-            &:hover {
-                background: @colorLink;
-                color: @colorWhite;
-            }
-
-            i {
-                position: relative;
-                top: 1.5px;
-                text-align: center;
-            }
-        }
-
-        &:hover {
-            .delete-token {
-                transform: rotateY(0);
-            }
-            .dapp-identicon {
-                transform: rotateY(180deg);
-            }
-        }
-        &:last-child {
-            max-width: @gridWidth * 6.5;
-        }
-
-    }
-
-    > .dapp-identicon {
-        position: absolute;
-        left: 12px;
-        top: 20px;
-    }
-    .spinner-container {
-        position: absolute;
-        top: -11px;
-        left: -72px;
-    }
-    .dapp-progress {
-        position: absolute;
-        left: 0px;
-        bottom: 0;
-    }
-
-    .token-list {
-        .dapp-vertical-menu;
-        position: absolute;
-        left: @gridWidth * 1.5;
-        top: 4px;
-
-        li {
-            margin: 3px 0;
-        }
-
-        .dapp-identicon {
-            display: block;
-            width: 10px;
-            height: 10px;
-        }
-    }
-
-
-    .account-pattern {
-        position: absolute;
-        .display(flex);
-        .align-items(center);
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: auto;
-        min-width: @gridWidth*1.4;
-        padding: 0 @gridWidth/2;
-        background-color: @colorLink;
-        text-align: center;
-        line-height: 100%;
-        color: @colorWhite;
-        font-size: 1.8em;
-        .box-sizing(border-box);
-
-        a {
-            margin: 0 -@gridWidth/3;
-        }
-    }
-
-    > h3 {
-        margin: 0;
-        margin-top: 4px;
-        color: @colorLink;
-        max-width: @gridWidth*4.4;
-        float: left;
-
-        &.ens-name {
-            font-weight: 600;
-        }
-        &.not-ens-name {
-            font-style: italic;
-        }
-    }
-    &:not(.create) > h3 {
-        .dapp-shorten-text;
-    }
+    width: 100%;
+    height: @gridHeight;
+    border-bottom: 1px solid @colorGreen;
 
     > span {
-        position: relative;
-        clear: left;
-        float: left;
-        color: @colorTextSecondary;
-        font-size: 1.3em;
-        line-height: 1.35em;
-        .dapp-shorten-text;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        line-height: @gridHeight;
+        text-align: center;
+        font-size: 0.7em;
+    }
 
+    .dapp-bar {
+        height: 100%;
+        .background-image(linear-gradient(to top, @colorGreen 0%, lighten(@colorGreen, 20%) 100%));
 
-        &.account-id {
-            font-size: 0.8em;
-            line-height: 1.4em;
-            color: fadeout(@colorTextSecondary, 40%);
-
-            &.creating {
-                color: @colorWhite;
-            }
-        }
+        // ANIMATION
+        .transition(width @animationSpeed*26 linear);
     }
 }
 
-.select-token {
+.dapp-message {
+    position: relative;
+    max-width: @gridWidth * 16;
+    margin: @defaultMargin*3 0;
+    font-size: 1.5em;
+    font-weight: 100;
+    line-height: 27pt;
+
+    // input[type="text"] {
+    //     display: block;
+    //     width: @gridWidth * 10;
+    //     color: @colorLink;
+    //     margin-top: 1*@gridHeight;
+    //     background: lighten(@colorGrayLight, 4%);
+    //     border-bottom: solid 2px @colorGrayLight;
+    //     font-size: 1em;
+    // }
+}
+
+
+.dapp-count {
+    .display(flex);
+    .align-items(center);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 @gridWidth/4;
+    color: @colorWhite;
+    font-weight: 100;
+    .opacity(0.7);
+
+    // ANIMATION
+    .transition(opacity @animationSpeed);
+    &.animate {
+        .opacity(0);
+    }
+}
+.active .dapp-count {
+    background-color: @colorGrayLight;
+    color: darken(@colorBackgroundAside, 20%);    
+}
+
+.dapp-url-bar {
+    display: block;
+    text-align: center;
+    width: 100%;
+    // .calc(width, ~'100% - 64px');    
+    .border-radius(8px);
+}
+
+
+
+.dapp-account-list {
+    @dappPaddingVertical:  @gridHeight * 0.5;
+    @dappPaddinghorizontal:  @gridWidth * 1.5;
+
+    // flex-grow: 2;
+    list-style-type: none;
+    overflow: auto;
+    padding-left: 0;
     .dapp-vertical-menu;
-    .transition(box-shadow @animationSpeed * 2);
-    background: @colorGrayLight;
-    margin-top: @gridHeight*0.75;
 
-    
-    &:hover {
-        .dapp-shadow-medium;
-    }
-
-    input[type="radio"]{
-        display: none !important;
-    }
-
-    input:checked + label {
+    li {
+        padding: @dappPaddingVertical/2 0;
+        padding-left: @dappPaddinghorizontal;
+        min-height: @gridHeight * 2.5;
         position: relative;
-        border-color: @colorGray;
-        color: @colorGrayDark;
-        padding: @defaultPaddingVertical/2 @defaultPaddingHorizontal/2;
-        opacity: 1;        
-        background: @colorGray;
-        font-weight: 400;
-
-        span {
-            color: @colorGrayDark;
-            border-color: @colorGrayDark;
-        }
-    }
-
-
-    label {
-        display: block;
-        // text-transform: uppercase;
-        // max-width: @gridWidth * 9;
-        color: @colorLink;
-        display: flex;
         overflow: hidden;
-        height: @gridHeight * 2;
-        padding: @defaultPaddingVertical/2 @defaultPaddingHorizontal/2;  
-        .transition(height @animationSpeed/2, opacity @animationSpeed/2, padding @animationSpeed/2);
-        cursor: pointer;
+        font-family: @fontFamily;
 
-        &:hover {
-            background: @colorWhite;
+
+        button.selected {
+            min-height: @gridHeight * 2;
+            border-left: 3px solid @colorLink;
+
+            .dapp-identicon {
+                margin-top: -2px;
+                margin-left: -2px; 
+                border: 2px solid @colorGray;
+                width: 36px;
+                height: 36px;
+            }
+
+            figure {
+                position: absolute;
+                color: @colorWhite;
+                right: 0;
+                top: 0;
+                font-size: 160%;
+                z-index: 10;
+                bottom: 0;
+                text-align: center;
+                padding-top: 4px;
+                padding: 9px 10px;
+                background: linear-gradient(to right, transparent, @colorLink 50%);
+            }
         }
 
-        span {
-            flex: 1 auto;
+        button {
+            position: relative;
+            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: @dappPaddingVertical/2 0;
+            padding-left: @dappPaddinghorizontal;
+            margin: -@dappPaddingVertical/2 0;
+            margin-left: -@dappPaddinghorizontal;
+            width: 100%;
+            height: 100%;
+            min-height: @gridHeight * 2;
+            font-family: @fontFamily;
+            text-align: left;
+            border-left-color: @colorGray;
+            border-left-style: solid;
+            outline: none;
+            .transition(border 0.25s);
+
+            &:focus {
+                border-bottom: none !important;                
+            }
+
+            &:hover {
+                border-left-width: 6px;
+                border-bottom: none !important;                
+            }
+
+            &:active {
+                transform: scale(1) !important;
+            }
+
+        }
+
+        .dapp-identicon {
+            position: absolute;
+            top: @gridHeight/3;
+            left: @gridWidth/4;
+        }
+
+        h3 {
+            .dapp-shorten-text;
+            display: block;
+            padding: 0;
+            margin: 0;
+            color: @colorLink;
+            text-transform: none;
+            font-weight: 400;
+            font-size: 90%;
+            text-shadow: #fff 0 1px 0;
+        }
+
+        h3 + span {
+            // position: relative;
+            // top: -0.25 * @gridHeight;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        span.token-name {
-            padding-left: @defaultPaddingHorizontal/4;
-            padding-right: @defaultPaddingHorizontal/4;
-        }
-
-        span.balance {
-            text-align: right;
+            font-size: 75%;
+            opacity: 0.5;
             color: @colorTextSecondary;
         }
+    }
+}
 
-        span.ether-symbol {
-            .flex(0);
-            display: inline-block;
-            min-width: 22px;
-            padding: 1px 0;
-            height: 22px;
-            border: 1px solid @colorLink;
-            .border-radius(50%);
-            text-align: center;
-            font-size: 14px;
+
+.dapp-modal-buttons {
+    .display(flex);
+    .justify-content(flex-end);
+    
+    margin: @gridHeight @gridWidth 0;
+
+    button, a, a:visited {
+        .flex(0 0 auto);
+        font-size: 1.1em;
+        max-width: none;
+        margin: @defaultPaddingVertical @defaultPaddingHorizontal;
+        font-weight: 300;
+
+        &.dapp-primary-button {
+            font-weight: 500;
         }
 
-        span.dapp-identicon {
-            flex: 0;
-            min-width: 21px;
+        &:last-child {
+            margin-right: 0;
         }
     }
+}
 
+
+// default elements
+
+a,
+a:visited,
+button {
+    text-decoration: none;
+    color: @colorLink;
+
+    outline: 0;
+
+    &:hover,
+    &:focus {
+        outline: 0;
+    }
+    &:focus {
+        border-bottom: 1px dotted @colorLink;
+    }
+    &:active {
+        .scale(0.95);
+        border-bottom: 0;
+    }
+}
+button {
+    .dapp-button-reset;
+    font-weight: inherit;
+}
+
+hr {
+    border: 0;
+    height: 0;
+    margin: @defaultMargin*2 0;
+    background-color: transparent;
+    border-bottom: 1px solid @colorGray; 
+}
+
+h1, h2, h3, h4 {
+    clear: both;
+}
+
+h1 {
+    margin: @defaultMargin 0;
+    margin-bottom: @defaultMargin*3;
+    font-weight: 100;
+    font-size: 2.2em;
+    line-height: 1.4em;
+    color: @colorTextSecondary;
+
+    span {
+        font-weight: 500;
+    }
+
+    + h2{
+        margin-top: 0;
+    }
+    + p {
+        margin-top: -@defaultMargin*2;
+    }
+
+    strong {
+        font-weight: 400;
+    }
+}
+
+h2 {
+    display: inline-block;
+    padding: 0 @defaultPaddingHorizontal/4;
+    padding-bottom: 1px;
+    margin: @defaultMargin*3 0;
+    font-size: 1em;
+    text-transform: uppercase;
+    background: @colorTextSecondary;
+    color: @colorWhite;
+
+    font-family: 'Montserrat';
+    font-weight: 400;
+
+    + table {
+        margin-top: 0;
+    }
+}
+
+h3 {
+    margin: @defaultMargin 0;
+    padding: 0;
+    color: fadeout(@colorTextSecondary, 30%);
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+h4 {
+    margin: @defaultMargin 0;
+    padding: 0;
+    color: fadeout(@colorTextSecondary, 30%);
+    font-weight: 500;
+    font-size: 1em;
+}
+
+pre,
+code {
+    .dapp-overflow;
+    word-break: break-word;
+    padding: @defaultPaddingVertical/2;
+    background-color: @colorGrayLight;
+    font-size: 0.8em;
+    text-align: left;
 }
 
 
 table {
-    tr {
-        &.full-width {
-            background-color: transparent !important;
+    width: 100%;
+    margin: @defaultMargin 0;
 
-            td {
-                position: relative;
-                height: @gridHeight*3;
-                text-align: center;
-            }
-        }
-    }
-    td {
-        text-align: left;
-        vertical-align: middle;
-    }
-
-    &.transactions {
-        tr {
-            &:not(.pending) {
-                cursor: pointer;
-
-                &:hover {
-                    border-left: 2px solid @colorGray;
-                    border-right: 2px solid @colorGray;
-                }
-            }
-
-            &.unconfirmed {
-                .opacity(0.4);
-            }
-            &.disabled {
-                .opacity(0.2);
-            }
-
-            border-left: 2px solid transparent;
-            border-right: 2px solid transparent;
-
-            .dapp-progress {
-                position: absolute;
-                left: 1px;
-                right: 1px;
-                margin: 0;
-                height: 84px;
-                width: auto;
-                border: 0;
-                .opacity(0.1);
-
-                .dapp-bar {
-                    .background-image(linear-gradient(to bottom, @colorBlue 0%, fadeout(@colorBlue, 100%) 100%));
-                }
-
-                > span {
-                    padding: 0;
-                    line-height: @gridHeight + @defaultPaddingVertical*2 + 4px;
-                    font-size: 0.8em;
+    &.dapp-zebra {
+        tbody {
+            tr {
+                &:nth-child(odd) {
+                    background-color: fadeout(@colorGray, 70%);
                 }
             }
         }
+        thead + tbody {
+            tr {
+                &:nth-child(even) {
+                    background-color: fadeout(@colorGray, 70%);
+                }
+            }
+        }
+    }
 
+    &.dapp-small {
         td {
-
-            &.plus, .plus {
-                color: @colorTextSecondary;                
-            }
-            &.minus, .minus {
-                color: @colorError;
-            }
-
-            &.time {
-                text-align: center;
-                padding-left: @defaultMargin;
-                cursor: help;
-
-                p {
-                    font-size: 2em;
-                    padding-top: 0;
-                }
-            }
-            &.transaction-amount {
-                text-align: right;
-
-            }
-            &.account-name {
-                color: @colorTextSecondary;
-                line-height: @lineHeight;
-
-                // a {
-                //     .dapp-shorten-text;
-                //     max-width: 200px;
-                // }
-
-
-                span.arrow {
-                    display: inline;
-                    padding: 0 4px;
-                }
-
-                .owner-confirmations {
-                    margin-top: @defaultMargin/2;
-
-                    > div {
-                        position: relative;
-                        display: inline-block;
-                    }
-                    > div + span {
-                        margin-left: @defaultMargin/2;
-                    }
-                    a {
-                        display: block;
-                        position: relative;
-                        margin-top: 0;
-                        margin-left: 0;
-                    }
-                    i {
-                        position: absolute;
-                        z-index: 2;
-                        color: darken(@colorGreen, 25%);
-                        background-color: fadeout(@colorGreen, 20%);
-                        .border-radius(50%);
-                        margin-top: -1px;
-                        margin-left: 0;
-                        font-size: 22px;
-                    }
-                }
-            }
-            &.info {
-                text-align: right;
-                font-size: 0.8em;
-            }
-            &.transaction-purpose {
-                font-weight: 400;
-            }
-            &.button {
-                position: relative;
-                min-width: 100px;
-                text-align: right;
-                padding: 0;
-
-                button {
-                    width: 120px;
-                    margin-right: @defaultMargin;  
-                    text-align: center;
-                    .transition(background-color @animationSpeed/2);
-
-                    .hover-label {
-                        display: none;
-                    }
-                    &:hover {
-                        .label { 
-                            display: none;                      
-                        }
-                        .hover-label {
-                            display: block;
-                        }
-                    }
-                }
-
-                button.approve {
-                    background-color: @colorGreen;
-                    border-color: darken(@colorGreen, 10%);
-                    &.selected:not(:hover) {
-                        background-color: transparent;
-                        color: @colorError;
-                        border: @colorError 1px solid;
-                    }
-                }
-                button.revoke {
-                    background-color: @colorError;
-                    border-color: darken(@colorError, 10%);
-                    &.selected:not(:hover) {
-                        background-color: transparent;
-                        color: @colorGreen;
-                        border: @colorGreen 1px solid;
-                    }
-                }
-            }
-
-            button.show-more {
-                width: 100%;
-                text-align: center;
-            }
+            padding: @defaultPaddingVertical/2 @defaultPaddingHorizontal/4;
+            font-size: 0.8em;
         }
+    }
+
+    + h2,
+    + h3 {
+        margin-top: @defaultMargin*2;
+    }
+
+    td {
+        padding: @defaultPaddingVertical @defaultPaddingHorizontal/2;
+
+        h2 {
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
+            color: @colorTextSecondary;
+            text-transform: none;
+            font-style: normal;
+        }
+        p {
+            padding-top: @defaultMargin/2;
+            margin: 0;
+            font-size: 0.9em;
+        }
+    }
+
+    thead {
+        background-color: @colorTextSecondary;
+        color: @colorWhite;
+        text-transform: uppercase;
     }
 }
 
-.account-page-notification {
-    .transition(opacity @animationSpeed * 2);
 
-    .row {
-        text-align: center;
-        background: @colorError;
-        padding: @defaultPaddingHorizontal;
-        font-size: 120%;
+// OVERWRITES for elements from the ethereum:elements package
+.dapp-input {
+    border: 0;
+    border-bottom: solid 2px @colorGray;
+    background-color: @colorGrayLight;
+    color: @colorLink;
+    .transition(opacity 1s);
 
-        a {
-            color: @colorWhite;
-        } 
+    .placeholder(@colorGray);
 
-        &:hover {
-            background: lighten(@colorError, 10%);
-        }       
+    &:disabled {
+        color: @colorGrayDark;
+        opacity: 0.25;
     }
-  
-    a.learn-more-link {
-        display: block;
-        padding-top: @gridHeight;
+
+    &.dapp-tiny {
+        font-size: 0.6em;
+        border-bottom-width: 1px; 
+    }
+    &.dapp-small {
+        font-size: 0.8em;
+    }
+    &.dapp-large {
+        font-size: 1.5em;
+    }
+
+    &:invalid,
+    &.dapp-error {
         color: @colorError;
-        text-align: center;
-        font-weight: 400;
-
-        &:hover {
-            cursor: pointer;
-            text-decoration: underline;
-        }
-    }  
-}
-
-.sticky + div .account-page-notification {
-    opacity: 0;
-}
-
-// Ace Editor Error Highlight
-.errorMarker {
-  position:absolute;
-  background: #FF0000;
-  z-index:20;
-  opacity: 0.2;
-}
-
-
-// Send page
-
-.dapp-select-account.inline {
-    display: inline-block;
-}
-
-.replay-protection {
-    position: relative;
-    top: 5px;
-}
-
-.replay-protection-div {
-    .dapp-address-input {
-        display: inline-block;
-        width: @gridWidth * 13;
+        background: fadeout(@colorError, 90%);
+        border-color: fadeout(@colorError, 85%);
     }
+}
+
+.dapp-address-input {
+    input {
+        .dapp-input;
+        
+    }
+}
+
+// forms
+input,
+select,
+textarea {
+    .dapp-input;
+    display: inline-block;
+    width: 300px;
+    max-width: 100%;
+    margin-top: @gridHeight;
+    padding: @defaultPaddingVertical/2 @defaultPaddingHorizontal/2;
+    padding-bottom: @defaultPaddingVertical/3;
+    .box-sizing(border-box);
+    .border-radius(0);
+    font-size: 1em;
+    font-weight: 300;
+
+    &:focus {
+        outline: 0;
+        border-color: @colorLink;
+    }
+}
+
+h1 + input,
+h1 + select,
+h1 + textarea,
+h2 + input,
+h2 + select,
+h2 + textarea,
+h3 + input,
+h3 + select,
+h3 + textarea,
+h4 + input,
+h4 + select,
+h4 + textarea {
+    margin-top: 0;
+}
+
+:disabled {
+    color: @colorGrayDark;
+    // background-color: @colorGrayLight;
+}
+input[type="checkbox"], input[type="radio"] {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    outline: none !important;
+    -webkit-appearance: none;
+    
+    width: auto;
+
+    width:  24px;
+    height: 24px;
+
+    // Radio
+    &::before {
+        content: '';
+        position: relative;
+        top:  0;
+        left: 0;
+        display: block;
+
+        background: @colorGrayLight;
+        border: 1px solid @colorGrayLight;
+        .box-shadow(inset 0 0 2px rgba(0,0,0,0.2));
+        // .dapp-shadow-medium;
+
+        width:  24px;
+        height: 24px;
+    }
+
+    &:active::before {
+        // .dapp-shadow-medium;
+    }
+
+    &:focus::before {
+        border-color: fadeout(@colorLink, 60%);
+        // .dapp-shadow-medium;
+    }
+    &:disabled::before {
+        cursor: not-allowed;
+        background-color: fadeout(@colorGrayLight, 20%);
+        border-color: @colorGrayLight;
+    }
+
+
+    // Radio Pip
+    &:after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 6px;
+        left: 6px;
+
+        background: @colorLink;
+        .dapp-shadow-small;
+
+        width:  12px;
+        height: 12px;
+
+        .transition(transform @animationSpeed);
+        .scale(0);
+    }
+
+    &:checked:after {
+        .scale(1);
+    }
+
+    &:disabled:after {
+        background: fadeout(@colorLink, 60%);
+    }
+}
+
+input[type="radio"] {
+    .border-radius(50%);
+    
+    &:before {
+        .border-radius(50%);
+    }
+    &:after {
+        .border-radius(50%);
+    }
+}
+input[type="range"] {
+    -webkit-appearance: none;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+
+    &::-webkit-slider-runnable-track {
+        height: 5px;
+        background-color: @colorGray;
+        border: none;
+        .border-radius(3px);
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background-color: @colorGrayDark;
+        margin-top: -6px;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus::-webkit-slider-thumb {
+        background-color: @colorLink;
+    }
+
+    &::-moz-range-track {
+        // width: 300px;
+        height: 5px;
+        background-color: @colorGray;
+        border: none;
+        .border-radius(3px);
+    }
+
+    &::-moz-range-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background-color: @colorGrayDark;
+        margin-top: -4px;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus::-moz-range-thumb {
+        background-color: @colorLink;
+    }
+}
+
+label {
+    font-weight: 300;
+}
+fieldset {
+    border: 0;
+    padding: 0;
+    margin: @defaultMargin;
+}
+select {
+    height: 45px;
+}
+
+// turns radio buttons in segmented controls
+.dapp-segmented-control {
+    .display(flex);
+
+    &.dapp-small {
+        label {
+            padding: @defaultPaddingVertical/2 @defaultPaddingHorizontal/2;
+            font-size: 0.8em;
+        }
+    }
+
+    input {
+        display: none;
+    }
+
+    label {
+        .flex(1);
+        color: @colorLink;
+        background: @colorGrayLight;
+        padding: @defaultPaddingVertical @defaultPaddingHorizontal;
+        margin: 1px;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 400;
+        border-right-width: 0;
+        cursor: pointer;
+        .transition(background-color @animationSpeed/2);
+
+        &:nth-child(2) {
+            .border-radius(4px 0 0 4px);
+        }        
+
+        &:last-child {
+            border-right-width: 1px;
+            .border-radius(0 4px 4px 0);
+        }
+    }
+
+    input:checked + label {
+        background: @colorGray;
+        border-color: @colorGray;
+        color: @colorGrayDark;
+    }
+
+
 }
