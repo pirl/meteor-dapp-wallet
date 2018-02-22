@@ -90,7 +90,7 @@
             "buttons": {
                 "deposit": "Déposer de l'ether",
                 "depositBitcoin": "Déposer via du Bitcoin",
-                "viewOnExplorer": "View on Diver",
+                "viewOnExplorer": "View on Poseidon",
                 "copyAddress": "Copier l'adresse",
                 "scanQRCode": "Afficher le QR Code",
                 "showInterface": "Afficher l'interface"
