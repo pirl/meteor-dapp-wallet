@@ -1,3 +1,6 @@
+# THIS VERSION OF PIRL IS DEPRECIATED, WE HAVE MOVED TO NPOS PROTOCOL
+
+
 # Ethereum Wallet Ðapp
 
 The Ethereum wallet.
